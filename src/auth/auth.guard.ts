@@ -2,7 +2,6 @@ import { ExecutionContext, HttpStatus, Injectable, UnauthorizedException } from 
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { TokenPayloadDTO } from './dtos/token.payload.dto'
-import { PrismaService } from 'src/prisma/prisma.service'
 import { BearerTokenProcessor } from 'src/common/functions/bearer-token.processor'
 
 @Injectable()
@@ -10,7 +9,6 @@ export class AuthGuard {
   constructor(
     private reflector: Reflector,
     private readonly jwtService: JwtService,
-    private prisma: PrismaService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -47,15 +45,15 @@ export class AuthGuard {
           throw new UnauthorizedException('JWT decode error')
         if (!bearerTokenProcessor.isSignatureValid())
           throw new UnauthorizedException('Signature is invalid or token already expired')
-        const userEntity = await this.prisma.user.findFirst({
-          where: {
-            id: bearerTokenProcessor?.payload?.id,
-            cpf: bearerTokenProcessor?.payload?.cpf,
-            email: bearerTokenProcessor?.payload?.email,
-          },
-        })
-        if (!userEntity) throw UnauthorizedException
-        return new TokenPayloadDTO(userEntity.id, userEntity.email, userEntity.cpf)
+        // // const userEntity = await this.prisma.user.findFirst({
+        // //   where: {
+        // //     id: bearerTokenProcessor?.payload?.id,
+        // //     cpf: bearerTokenProcessor?.payload?.cpf,
+        // //     email: bearerTokenProcessor?.payload?.email,
+        // //   },
+        // // })
+        // // if (!userEntity) throw UnauthorizedException
+        // return new TokenPayloadDTO(userEntity.id, userEntity.email, userEntity.cpf)
       }
       default:
         throw new UnauthorizedException(

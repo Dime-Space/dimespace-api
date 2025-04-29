@@ -1,5 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
-// import { AddressEntity } from './address.entity'
+import { AddressEntity } from 'src/address/address.entity'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  JoinColumn,
+} from 'typeorm'
 // import { CompanyEntity } from './company.entity'
 // import { ProjectEntity } from './project.entity'
 
@@ -41,17 +51,18 @@ export class UserEntity {
   @Column({ type: 'timestamp' })
   birthdate: Date
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date
 
-  @Column({ type: 'timestamp', nullable: true })
+  @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updated_at?: Date
 
-  @Column({ type: 'timestamp', nullable: true })
+  @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deleted_at?: Date
 
-  // @ManyToOne(() => AddressEntity, (address) => address.users)
-  // address: AddressEntity
+  @ManyToOne(() => AddressEntity, (address) => address.users, { nullable: false })
+  @JoinColumn({ name: 'address_id' })
+  address: AddressEntity
 
   // @ManyToOne(() => CompanyEntity, (company) => company.users)
   // company: CompanyEntity

@@ -1,14 +1,18 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcryptjs'
-import { User } from 'generated/prisma'
 import { TokenPayloadDTO } from './dtos/token.payload.dto'
+import { UserRepository } from '../user/user.repository'
+import { UserEntity } from 'src/user/user.entity'
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly userRepository: UserRepository,
+  ) {}
 
-  async generateToken(user: User): Promise<string> {
+  async generateToken(user: UserEntity): Promise<string> {
     return this.jwtService.sign(
       {
         payload: new TokenPayloadDTO(user.id, user.email, user.cpf),
@@ -17,12 +21,12 @@ export class AuthService {
     )
   }
 
-  async validateUser(email: string, password: string): Promise<User | null> {
-    // const user = await this.prisma.user.findFirst({ where: { email: email } })
+  async validateUser(email: string, password: string): Promise<UserEntity | null> {
+    const user = await this.userRepository.findOne({ where: { email: email } })
 
-    // if (user && bcrypt.compareSync(password, user.password)) {
-    //   return user
-    // }
+    if (user && bcrypt.compareSync(password, user.password)) {
+      return user
+    }
 
     return null
   }

@@ -1,12 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, HttpStatus } from '@nestjs/common'
+import { ResponseHelper } from './common/utils/response.helper'
 
-@Controller()
+@Controller('health')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  checkHealth() {
+    return ResponseHelper.formatResponse(HttpStatus.OK, 'Check')
   }
 }

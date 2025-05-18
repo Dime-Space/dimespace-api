@@ -10,7 +10,7 @@ export class UserController {
 
   @Auth(false)
   @Post()
-  async login(@Body() body: CreateUserDTO) {
+  async create(@Body() body: CreateUserDTO) {
     const user = await this.userService.create(body)
 
     return ResponseHelper.formatResponse(HttpStatus.CREATED, 'User successfully created', user)

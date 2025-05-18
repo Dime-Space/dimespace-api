@@ -11,6 +11,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { UserModule } from './user/user.module'
 import { AddressEntity } from './address/address.entity'
 import { LoggerMiddleware } from './common/middleware/logger.middleware'
+import { CompanyEntity } from './company/company.entity'
+import { CompanyModule } from './company/company.module'
 
 @Module({
   imports: [
@@ -28,14 +30,15 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware'
           username: configService.get<string>('DB_USER'),
           password: configService.get<string>('DB_PASSWORD'),
           database: configService.get<string>('DB_NAME'),
-          entities: [UserEntity, AddressEntity],
+          entities: [UserEntity, AddressEntity, CompanyEntity],
           logging: configService.get<boolean>('DB_DEBUG'),
         }
       },
     }),
-    TypeOrmModule.forFeature([UserEntity, AddressEntity]),
+    TypeOrmModule.forFeature([UserEntity, AddressEntity, CompanyEntity]),
     AuthModule,
     UserModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtService, { provide: APP_GUARD, useClass: AuthGuard }],

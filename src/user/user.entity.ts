@@ -1,4 +1,5 @@
 import { AddressEntity } from 'src/address/address.entity'
+import { CompanyEntity } from 'src/company/company.entity'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -64,12 +65,12 @@ export class UserEntity {
   @JoinColumn({ name: 'address_id' })
   address: AddressEntity
 
-  // @ManyToOne(() => CompanyEntity, (company) => company.users)
-  // company: CompanyEntity
+  @ManyToOne(() => CompanyEntity, (company) => company.users)
+  company: CompanyEntity
 
   // @OneToMany(() => ProjectEntity, (project) => project.user)
   // projects: ProjectEntity[]
 
-  // @OneToMany(() => CompanyEntity, (company) => company.user_owner)
-  // ownedCompanies: CompanyEntity[]
+  @OneToMany(() => CompanyEntity, (company) => company.userOwner)
+  ownedCompanies: CompanyEntity[]
 }

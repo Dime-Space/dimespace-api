@@ -1,6 +1,6 @@
-import { UpdateAddresDTO } from 'src/address/dtos/update-addres.dto'
+import { UpdateAddressDTO } from 'src/address/dtos/update-address.dto'
 
-export type UpdateUserDTO= {
+export type UpdateUserDTO = {
   name: string
   email: string
   password: string
@@ -10,5 +10,5 @@ export type UpdateUserDTO= {
   area?: string
   biography?: string
   birthdate: string
-  address: UpdateAddresDTO
+  address: UpdateAddressDTO
 }

@@ -1,11 +1,11 @@
-import { User } from 'generated/prisma'
+import { UserEntity } from 'src/user/user.entity'
 
 export class TokenPayloadDTO {
   id: number
   email: string
   cpf: string
 
-  static constructorBasedOnEntity(user: User) {
+  static constructorBasedOnEntity(user: UserEntity) {
     return new TokenPayloadDTO(Number(user.id), user.email, user.cpf)
   }
 

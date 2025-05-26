@@ -1,11 +1,18 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { CompanyService } from './company.service'
 import { CreateCompanyDTO } from './dtos/create-company.dto'
 import { ResponseHelper } from 'src/common/utils/response.helper'
+import { UpdateCompanyDTO } from './dtos/update-company,dto'
 
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
+
+  @Get(':id')
+  async findById(@Param('id') id: number) {
+    const company = await this.companyService.findById(id)
+    return ResponseHelper.formatResponse(HttpStatus.OK, 'Company successfully found', company)
+  }
 
   @Post()
   async create(@Body() body: CreateCompanyDTO) {
@@ -16,5 +23,19 @@ export class CompanyController {
       'Company successfully created',
       company,
     )
+  }
+
+  @Put(':id')
+  async update(@Param() id: number, @Body() body: UpdateCompanyDTO) {
+    const company = await this.companyService.update(id, body)
+
+    return ResponseHelper.formatResponse(HttpStatus.OK, 'Company successfully updated', company)
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: number) {
+    await this.companyService.delete(id)
+
+    return ResponseHelper.formatResponse(HttpStatus.OK, 'Company successfully deleted')
   }
 }

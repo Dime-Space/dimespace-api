@@ -13,6 +13,8 @@ import { AddressEntity } from './address/address.entity'
 import { LoggerMiddleware } from './common/middleware/logger.middleware'
 import { CompanyEntity } from './company/company.entity'
 import { CompanyModule } from './company/company.module'
+import { ProposalModule } from './proposal/proposal.module'
+import { Proposal } from './proposal/entities/proposal.entity' // não esqueça de importar a entidade!
 
 @Module({
   imports: [
@@ -22,26 +24,30 @@ import { CompanyModule } from './company/company.module'
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: configService.get<string>('DB_HOST'),
-          port: configService.get<number>('DB_PORT'),
-          username: configService.get<string>('DB_USER'),
-          password: configService.get<string>('DB_PASSWORD'),
-          database: configService.get<string>('DB_NAME'),
-          entities: [UserEntity, AddressEntity, CompanyEntity],
-          logging: configService.get<boolean>('DB_DEBUG'),
-        }
-      },
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        entities: [UserEntity, AddressEntity, CompanyEntity, Proposal], // adiciona Proposal aqui
+        logging: configService.get<boolean>('DB_DEBUG'),
+      }),
     }),
     TypeOrmModule.forFeature([UserEntity, AddressEntity, CompanyEntity]),
+
     AuthModule,
     UserModule,
     CompanyModule,
+    ProposalModule,
   ],
   controllers: [AppController],
-  providers: [AppService, JwtService, { provide: APP_GUARD, useClass: AuthGuard }],
+  providers: [
+    AppService,
+    JwtService,
+    { provide: APP_GUARD, useClass: AuthGuard },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

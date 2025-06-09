@@ -2,16 +2,17 @@ import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@
 import { ProposalService } from './proposal.service';
 import { CreateProposalDTO } from './dto/create-proposal.dto';
 import { UpdateProposalDTO } from './dto/update-proposal.dto';
+import { Auth } from 'src/auth/auth.decorator';
 
 @Controller('proposals')
 export class ProposalController {
   constructor(private readonly proposalService: ProposalService) {}
-
+@Auth(false)
   @Get()
   async findAll() {
     return this.proposalService.findAll();
   }
-
+@Auth(false)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.proposalService.findOne(id);

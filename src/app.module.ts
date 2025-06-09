@@ -33,7 +33,6 @@ import { Proposal } from './proposal/entities/proposal.entity' // não esqueça 
         database: configService.get<string>('DB_NAME'),
         entities: [UserEntity, AddressEntity, CompanyEntity, Proposal], // adiciona Proposal aqui
         logging: configService.get<boolean>('DB_DEBUG'),
-        synchronize: true, // só usar em dev, cuidado no prod!
       }),
     }),
     TypeOrmModule.forFeature([UserEntity, AddressEntity, CompanyEntity]),

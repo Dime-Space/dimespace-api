@@ -14,7 +14,11 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware'
 import { CompanyEntity } from './company/company.entity'
 import { CompanyModule } from './company/company.module'
 import { ProposalModule } from './proposal/proposal.module'
-import { Proposal } from './proposal/entities/proposal.entity' // não esqueça de importar a entidade!
+import { ProposalEntity } from './proposal/entities/proposal.entity'
+import { ChatEntity } from './chat/chat.entity'
+import { ChatModule } from './chat/chat.module'
+import { MessageEntity } from './message/message.entity'
+import { MessageModule } from './message/message.module'
 
 @Module({
   imports: [
@@ -31,23 +35,27 @@ import { Proposal } from './proposal/entities/proposal.entity' // não esqueça 
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [UserEntity, AddressEntity, CompanyEntity, Proposal], // adiciona Proposal aqui
+        entities: [
+          UserEntity,
+          AddressEntity,
+          CompanyEntity,
+          ProposalEntity,
+          ChatEntity,
+          MessageEntity,
+        ],
         logging: configService.get<boolean>('DB_DEBUG'),
       }),
     }),
     TypeOrmModule.forFeature([UserEntity, AddressEntity, CompanyEntity]),
-
+    ChatModule,
     AuthModule,
     UserModule,
+    MessageModule,
     CompanyModule,
     ProposalModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    JwtService,
-    { provide: APP_GUARD, useClass: AuthGuard },
-  ],
+  providers: [AppService, JwtService, { provide: APP_GUARD, useClass: AuthGuard }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

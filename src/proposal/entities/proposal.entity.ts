@@ -1,41 +1,47 @@
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm'
 
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
-
-@Entity('projects') // nome da tabela no banco
-export class Proposal {
+@Entity('projects')
+export class ProposalEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  company_id: number;
+  company_id: number
 
   @Column({ nullable: true })
-  user_id: number;
+  user_id: number
 
   @Column()
-  title: string;
+  title: string
 
   @Column('text')
-  description: string;
+  description: string
 
   @Column()
-  value: string;
+  value: string
 
   @Column({ type: 'timestamp' })
-  final_date: Date;
+  final_date: Date
 
   @Column()
-  skill_requested: string;
+  skill_requested: string
 
   @Column()
-  status: string;
+  status: string
 
   @CreateDateColumn({ type: 'timestamp', nullable: true })
-  created_at: Date;
+  created_at: Date
 
   @UpdateDateColumn({ type: 'timestamp', nullable: true })
-  updated_at: Date;
+  updated_at: Date
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deleted_at: Date;
+  deleted_at: Date
 }

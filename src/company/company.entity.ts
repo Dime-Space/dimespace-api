@@ -46,5 +46,6 @@ export class CompanyEntity {
   users: UserEntity[]
 
   @ManyToOne(() => UserEntity, (user) => user.ownedCompanies)
+  @JoinColumn({ name: 'user_owner_id' })
   userOwner: UserEntity
 }

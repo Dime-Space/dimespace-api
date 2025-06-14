@@ -11,8 +11,6 @@ import {
   DeleteDateColumn,
   JoinColumn,
 } from 'typeorm'
-// import { CompanyEntity } from './company.entity'
-// import { ProjectEntity } from './project.entity'
 
 @Entity('users')
 export class UserEntity {
@@ -65,8 +63,9 @@ export class UserEntity {
   @JoinColumn({ name: 'address_id' })
   address: AddressEntity
 
-  @ManyToOne(() => CompanyEntity, (company) => company.users)
-  company: CompanyEntity
+  @ManyToOne(() => CompanyEntity, (company) => company.users, { nullable: true })
+  @JoinColumn({ name: 'company_id' })
+  company?: CompanyEntity
 
   // @OneToMany(() => ProjectEntity, (project) => project.user)
   // projects: ProjectEntity[]

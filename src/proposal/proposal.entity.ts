@@ -1,3 +1,5 @@
+import { CompanyEntity } from 'src/company/company.entity'
+import { UserEntity } from 'src/user/user.entity'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,6 +7,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm'
 
 @Entity('projects')
@@ -35,6 +39,14 @@ export class ProposalEntity {
 
   @Column()
   status: string
+
+  @ManyToOne(() => CompanyEntity, (company) => company.proposals)
+  @JoinColumn({ name: 'company_id' })
+  company: CompanyEntity
+
+  @ManyToOne(() => UserEntity, (user) => user.proposals)
+  @JoinColumn({ name: 'user_id' })
+  user?: UserEntity
 
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   created_at: Date

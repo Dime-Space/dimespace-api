@@ -1,5 +1,6 @@
 import { AddressEntity } from 'src/address/address.entity'
 import { CompanyEntity } from 'src/company/company.entity'
+import { ProposalEntity } from 'src/proposal/proposal.entity'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -67,8 +68,8 @@ export class UserEntity {
   @JoinColumn({ name: 'company_id' })
   company?: CompanyEntity
 
-  // @OneToMany(() => ProjectEntity, (project) => project.user)
-  // projects: ProjectEntity[]
+  @OneToMany(() => ProposalEntity, (proposal) => proposal.user)
+  proposals: ProposalEntity[]
 
   @OneToMany(() => CompanyEntity, (company) => company.userOwner)
   ownedCompanies: CompanyEntity[]

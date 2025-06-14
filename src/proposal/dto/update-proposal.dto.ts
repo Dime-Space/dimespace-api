@@ -1,4 +1,3 @@
-// update-proposal.dto.ts
-import { CreateProposalDTO } from './create-proposal.dto';
+import { CreateProposalDTO } from './create-proposal.dto'
 
-export type UpdateProposalDTO = Partial<CreateProposalDTO>;
+export type UpdateProposalDTO = Partial<CreateProposalDTO>

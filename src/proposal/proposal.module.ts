@@ -1,12 +1,13 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Proposal } from './entities/proposal.entity';
-import { ProposalService } from './proposal.service';
-import { ProposalController } from './proposal.controller';
+import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { ProposalEntity } from './proposal.entity'
+import { ProposalService } from './proposal.service'
+import { ProposalController } from './proposal.controller'
+import { ProposalRepository } from './proposal.respository'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Proposal])],
-  providers: [ProposalService],
+  imports: [TypeOrmModule.forFeature([ProposalEntity])],
+  providers: [ProposalService, ProposalRepository],
   controllers: [ProposalController],
 })
 export class ProposalModule {}

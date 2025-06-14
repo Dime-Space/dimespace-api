@@ -23,10 +23,10 @@ export class CompanyService {
     return company
   }
 
-  async create(createCompanyDto: CreateCompanyDTO) {
+  async create(userId: number, createCompanyDto: CreateCompanyDTO) {
     let address: AddressEntity
     const user = await this.userRepository.findOneOrFail({
-      where: { id: createCompanyDto.userId },
+      where: { id: userId },
       relations: ['address'],
     })
 

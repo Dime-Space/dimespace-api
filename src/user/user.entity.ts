@@ -1,5 +1,6 @@
 import { AddressEntity } from 'src/address/address.entity'
 import { CompanyEntity } from 'src/company/company.entity'
+import { ProposalEntity } from 'src/proposal/proposal.entity'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,8 +12,6 @@ import {
   DeleteDateColumn,
   JoinColumn,
 } from 'typeorm'
-// import { CompanyEntity } from './company.entity'
-// import { ProjectEntity } from './project.entity'
 
 @Entity('users')
 export class UserEntity {
@@ -65,11 +64,12 @@ export class UserEntity {
   @JoinColumn({ name: 'address_id' })
   address: AddressEntity
 
-  @ManyToOne(() => CompanyEntity, (company) => company.users)
-  company: CompanyEntity
+  @ManyToOne(() => CompanyEntity, (company) => company.users, { nullable: true })
+  @JoinColumn({ name: 'company_id' })
+  company?: CompanyEntity
 
-  // @OneToMany(() => ProjectEntity, (project) => project.user)
-  // projects: ProjectEntity[]
+  @OneToMany(() => ProposalEntity, (proposal) => proposal.user)
+  proposals: ProposalEntity[]
 
   @OneToMany(() => CompanyEntity, (company) => company.userOwner)
   ownedCompanies: CompanyEntity[]

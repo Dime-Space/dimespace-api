@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt'
 import { TokenPayloadDTO } from './dtos/token.payload.dto'
 import { BearerTokenProcessor } from 'src/common/functions/bearer-token.processor'
 import { UserRepository } from 'src/user/user.repository'
-import { AUTH_METADATA } from './auth.decorator'
+import { AUTH_METADATA } from '../common/decorators/auth.decorator'
 
 @Injectable()
 export class AuthGuard {

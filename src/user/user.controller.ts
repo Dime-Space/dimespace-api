@@ -1,14 +1,5 @@
-import {
-  Controller,
-  Post,
-  Body,
-  HttpStatus,
-  Get,
-  Param,
-  Patch,
-  Delete,
-} from '@nestjs/common'
-import { Auth } from 'src/auth/auth.decorator'
+import { Controller, Post, Body, HttpStatus, Get, Param, Patch, Delete } from '@nestjs/common'
+import { Auth } from 'src/common/decorators/auth.decorator'
 import { CreateUserDTO } from './dtos/create-user.dto'
 import { UpdateUserDTO } from './dtos/update-user.dto'
 import { UserService } from './user.service'

@@ -1,4 +1,5 @@
 import { AddressEntity } from 'src/address/address.entity'
+import { ProposalEntity } from 'src/proposal/proposal.entity'
 import { UserEntity } from 'src/user/user.entity'
 import {
   Entity,
@@ -45,6 +46,10 @@ export class CompanyEntity {
   @OneToMany(() => UserEntity, (user) => user.company)
   users: UserEntity[]
 
+  @OneToMany(() => ProposalEntity, (proposal) => proposal.company)
+  proposals: ProposalEntity[]
+
   @ManyToOne(() => UserEntity, (user) => user.ownedCompanies)
+  @JoinColumn({ name: 'user_owner_id' })
   userOwner: UserEntity
 }

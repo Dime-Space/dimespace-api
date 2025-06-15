@@ -3,6 +3,8 @@ import { CompanyService } from './company.service'
 import { CreateCompanyDTO } from './dtos/create-company.dto'
 import { ResponseHelper } from 'src/common/utils/response.helper'
 import { UpdateCompanyDTO } from './dtos/update-company,dto'
+import { TokenPayloadDTO } from 'src/auth/dtos/token.payload.dto'
+import { UserData } from 'src/common/decorators/user-data.decorator'
 
 @Controller('company')
 export class CompanyController {
@@ -15,8 +17,8 @@ export class CompanyController {
   }
 
   @Post()
-  async create(@Body() body: CreateCompanyDTO) {
-    const company = await this.companyService.create(body)
+  async create(@UserData() { id }: TokenPayloadDTO, @Body() body: CreateCompanyDTO) {
+    const company = await this.companyService.create(id, body)
 
     return ResponseHelper.formatResponse(
       HttpStatus.CREATED,

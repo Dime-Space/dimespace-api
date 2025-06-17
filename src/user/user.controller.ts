@@ -4,6 +4,8 @@ import { CreateUserDTO } from './dtos/create-user.dto'
 import { UpdateUserDTO } from './dtos/update-user.dto'
 import { UserService } from './user.service'
 import { ResponseHelper } from 'src/common/utils/response.helper'
+import { UserData } from 'src/common/decorators/user-data.decorator'
+import { TokenPayloadDTO } from 'src/auth/dtos/token.payload.dto'
 
 @Controller('user')
 export class UserController {
@@ -14,6 +16,12 @@ export class UserController {
   async create(@Body() body: CreateUserDTO) {
     const user = await this.userService.create(body)
     return ResponseHelper.formatResponse(HttpStatus.CREATED, 'User successfully created', user)
+  }
+
+  @Get('me')
+  async me(@UserData() { id }: TokenPayloadDTO) {
+    const user = await this.userService.findOne(id)
+    return ResponseHelper.formatResponse(HttpStatus.OK, 'User found', user)
   }
 
   @Get(':id')

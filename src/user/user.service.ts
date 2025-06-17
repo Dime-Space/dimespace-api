@@ -24,6 +24,19 @@ export class UserService {
     return user
   }
 
+  async findMe(id: number) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['address', 'ownedCompanies', 'company'],
+    })
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    return user
+  }
+
   async findOne(id: number) {
     const user = await this.userRepository.findOne({
       where: { id },
@@ -46,7 +59,6 @@ export class UserService {
       where: { id },
       relations: ['address'],
     })
-
     if (!user) {
       throw new Error('User not found')
     }
@@ -70,5 +82,3 @@ export class UserService {
     return { message: 'User removed successfully' }
   }
 }
-
-

@@ -10,10 +10,26 @@ import { CompanyRepository } from 'src/company/company.repository'
 import { UserRepository } from 'src/user/user.repository'
 import { UserEntity } from 'src/user/user.entity'
 import { CompanyEntity } from 'src/company/company.entity'
+import { ChatGateway } from './chat.gateway'
+import { MessageRepository } from 'src/message/message.respository'
+import { JwtModule } from '@nestjs/jwt'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ChatEntity, MessageEntity, UserEntity, CompanyEntity])],
-  providers: [ChatRepository, ChatService, UserRepository, CompanyRepository],
+  imports: [
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '7d' },
+    }),
+    TypeOrmModule.forFeature([ChatEntity, MessageEntity, UserEntity, CompanyEntity]),
+  ],
+  providers: [
+    ChatGateway,
+    ChatRepository,
+    ChatService,
+    UserRepository,
+    CompanyRepository,
+    MessageRepository,
+  ],
   exports: [ChatRepository],
   controllers: [ChatController],
 })

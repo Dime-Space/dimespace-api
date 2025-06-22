@@ -3,6 +3,8 @@ import { ChatRepository } from './chat.respository'
 import { CreateChatDTO } from './dtos/create-chat.dto'
 import { UserRepository } from 'src/user/user.repository'
 import { CompanyRepository } from 'src/company/company.repository'
+import { MessageRepository } from 'src/message/message.respository'
+import { MessageEntity } from 'src/message/message.entity'
 
 @Injectable()
 export class ChatService {
@@ -10,6 +12,7 @@ export class ChatService {
     private readonly chatRepository: ChatRepository,
     private readonly userRepository: UserRepository,
     private readonly companyRepository: CompanyRepository,
+    private readonly messageRepository: MessageRepository,
   ) {}
 
   async create(userId: number, createChatDTO: CreateChatDTO) {
@@ -94,5 +97,18 @@ export class ChatService {
       relations: ['user', 'company'],
     })
     return chat
+  }
+
+  async saveMessage(data: {
+    chatId: string
+    senderId: number
+    content: string
+  }): Promise<MessageEntity> {
+    const message = this.messageRepository.create({
+      chat: { id: Number(data.chatId) },
+      user: { id: data.senderId },
+      content: data.content,
+    })
+    return this.messageRepository.save(message)
   }
 }

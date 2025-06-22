@@ -4,7 +4,7 @@ import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { AuthGuard } from './auth/auth.guard'
 import { APP_GUARD } from '@nestjs/core'
-import { JwtService } from '@nestjs/jwt'
+import { JwtModule, JwtService } from '@nestjs/jwt'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from './user/user.entity'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -19,9 +19,11 @@ import { ChatEntity } from './chat/chat.entity'
 import { ChatModule } from './chat/chat.module'
 import { MessageEntity } from './message/message.entity'
 import { MessageModule } from './message/message.module'
+import { WsJwtGuard } from './auth/auth-ws.guard'
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([UserEntity]),
     ConfigModule.forRoot({
       isGlobal: true,
     }),

@@ -10,7 +10,7 @@ import {
 import { Server, Socket } from 'socket.io'
 import { ChatService } from './chat.service'
 import { WsJwtGuard } from 'src/auth/auth-ws.guard'
-import { UseGuards } from '@nestjs/common'
+import { HttpException, HttpStatus, Logger, UseGuards } from '@nestjs/common'
 
 @WebSocketGateway({
   cors: {
@@ -25,17 +25,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly chatService: ChatService) {}
 
   handleConnection(socket: Socket) {
-    console.log(`Client connected: ${socket.id}`)
+    Logger.log(`Client connected: ${socket.id}`)
   }
 
   handleDisconnect(socket: Socket) {
-    console.log(`Client disconnected: ${socket.id}`)
+    Logger.log(`Client disconnected: ${socket.id}`)
   }
 
   @SubscribeMessage('joinRoom')
   handleJoinRoom(@MessageBody() chatId: string, @ConnectedSocket() client: Socket) {
     client.join(chatId)
-    console.log(`Client ${client.id} joined room ${chatId}`)
+    Logger.log(`Client ${client.id} joined room ${chatId}`)
   }
 
   @SubscribeMessage('sendMessage')
@@ -49,10 +49,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
   ) {
     const { chatId, senderId, content } = payload
+    const user = client.data.user
+    if (!user || user.id !== senderId) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED)
+    }
 
     const message = await this.chatService.saveMessage({
       chatId,
-      senderId,
+      senderId: user.id,
       content,
     })
 

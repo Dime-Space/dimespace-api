@@ -72,5 +72,5 @@ export class UserEntity {
   proposals: ProposalEntity[]
 
   @OneToMany(() => CompanyEntity, (company) => company.userOwner)
-  ownedCompanies: CompanyEntity[]
+  ownedCompanies?: CompanyEntity[]
 }

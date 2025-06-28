@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query } from '@nestjs/common'
 import { CompanyService } from './company.service'
 import { CreateCompanyDTO } from './dtos/create-company.dto'
 import { ResponseHelper } from 'src/common/utils/response.helper'
@@ -40,4 +40,18 @@ export class CompanyController {
 
     return ResponseHelper.formatResponse(HttpStatus.OK, 'Company successfully deleted')
   }
+
+   @Get()
+   async find(
+    @Query('companyName') nomeDaEmpresa?: string, // Pega o valor de ?companyName=... da URL
+  ) {
+    if (nomeDaEmpresa) {
+      // Se o parâmetro foi passado, chama o serviço de busca por nome
+      return this.companyService.findByNome(nomeDaEmpresa);
+    } else {
+      // Se nenhum parâmetro foi passado, retorna todas as empresas (comportamento antigo)
+      return this.companyService.findAll();
+    }
+  }
 }
+

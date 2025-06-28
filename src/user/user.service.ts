@@ -40,14 +40,20 @@ export class UserService {
   async findOne(id: number) {
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['address'],
+      relations: ['address', 'ownedCompanies'],
     })
 
     if (!user) {
       throw new Error('User not found')
     }
 
-    return user
+    const companyOwned = user.ownedCompanies?.[0]
+
+    if (companyOwned) {
+      delete user.ownedCompanies
+    }
+
+    return { ...user, companyOwned }
   }
 
   async findAll() {

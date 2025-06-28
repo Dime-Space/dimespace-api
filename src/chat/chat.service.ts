@@ -80,7 +80,7 @@ export class ChatService {
 
   async list(userId: number) {
     const chat = await this.chatRepository.find({
-      where: { user: { id: userId } },
+      where: [{ user: { id: userId } }, { company: { userOwner: { id: userId } } }],
       select: {
         id: true,
         name: true,

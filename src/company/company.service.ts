@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { Like } from 'typeorm';
-import { AddressRepository } from 'src/address/address.repository';
-import { CompanyRepository } from './company.repository';
-import { CreateCompanyDTO } from './dtos/create-company.dto';
-import { AddressEntity } from 'src/address/address.entity';
-import { UserRepository } from 'src/user/user.repository';
-import { UpdateCompanyDTO } from './dtos/update-company,dto';
-import { CompanyEntity } from './company.entity'; 
+import { Injectable } from '@nestjs/common'
+import { Like } from 'typeorm'
+import { AddressRepository } from 'src/address/address.repository'
+import { CompanyRepository } from './company.repository'
+import { CreateCompanyDTO } from './dtos/create-company.dto'
+import { AddressEntity } from 'src/address/address.entity'
+import { UserRepository } from 'src/user/user.repository'
+import { UpdateCompanyDTO } from './dtos/update-company,dto'
+import { CompanyEntity } from './company.entity'
 
 @Injectable()
 export class CompanyService {
@@ -15,10 +15,9 @@ export class CompanyService {
     private readonly addressRepository: AddressRepository,
     private readonly userRepository: UserRepository,
   ) {}
-  
- 
+
   async findAll(): Promise<CompanyEntity[]> {
-    return this.companyRepository.find();
+    return this.companyRepository.find()
   }
 
   async findById(companyId: number) {
@@ -86,12 +85,11 @@ export class CompanyService {
     return { message: 'Company successfully deleted' }
   }
 
-  findByNome(nome: string): Promise<CompanyEntity[]> {
-    return this.companyRepository.find({
+  async findByName(name: string): Promise<CompanyEntity[]> {
+    return await this.companyRepository.find({
       where: {
-        // Supondo que a coluna no banco de dados se chama 'name'
-        name: Like(`%${nome}%`),
+        name: Like(`%${name}%`),
       },
-    });
+    })
   }
 }

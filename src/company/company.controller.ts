@@ -41,17 +41,14 @@ export class CompanyController {
     return ResponseHelper.formatResponse(HttpStatus.OK, 'Company successfully deleted')
   }
 
-   @Get()
-   async find(
-    @Query('companyName') nomeDaEmpresa?: string, // Pega o valor de ?companyName=... da URL
+  @Get()
+  async find(
+    @Query('companyName') companyName?: string, // Pega o valor de ?companyName=... da URL
   ) {
-    if (nomeDaEmpresa) {
-      // Se o parâmetro foi passado, chama o serviço de busca por nome
-      return this.companyService.findByNome(nomeDaEmpresa);
+    if (companyName) {
+      return this.companyService.findByName(companyName)
     } else {
-      // Se nenhum parâmetro foi passado, retorna todas as empresas (comportamento antigo)
-      return this.companyService.findAll();
+      return this.companyService.findAll()
     }
   }
 }
-

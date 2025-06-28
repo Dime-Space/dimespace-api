@@ -42,13 +42,19 @@ export class CompanyController {
   }
 
   @Get()
-  async find(
-    @Query('companyName') companyName?: string, // Pega o valor de ?companyName=... da URL
-  ) {
+  async find(@Query('companyName') companyName?: string) {
     if (companyName) {
-      return this.companyService.findByName(companyName)
+      return ResponseHelper.formatResponse(
+        HttpStatus.OK,
+        'Companies successfully listed',
+        this.companyService.findByName(companyName),
+      )
     } else {
-      return this.companyService.findAll()
+      return ResponseHelper.formatResponse(
+        HttpStatus.OK,
+        'Companies successfully listed',
+        this.companyService.findAll(),
+      )
     }
   }
 }

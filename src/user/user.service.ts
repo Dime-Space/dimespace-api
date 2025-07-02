@@ -40,19 +40,6 @@ export class UserService {
   async findOne(id: number) {
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['address', 'ownedCompanies', 'company'],
-    })
-
-    if (!user) {
-      throw new Error('User not found')
-    }
-
-    return user
-  }
-
-  async findOne(id: number) {
-    const user = await this.userRepository.findOne({
-      where: { id },
       relations: ['address', 'ownedCompanies'],
     })
 

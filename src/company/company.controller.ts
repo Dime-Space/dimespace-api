@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query } from '@nestjs/common'
 import { CompanyService } from './company.service'
 import { CreateCompanyDTO } from './dtos/create-company.dto'
 import { ResponseHelper } from 'src/common/utils/response.helper'
@@ -39,5 +39,22 @@ export class CompanyController {
     await this.companyService.delete(id)
 
     return ResponseHelper.formatResponse(HttpStatus.OK, 'Company successfully deleted')
+  }
+
+  @Get()
+  async find(@Query('companyName') companyName?: string) {
+    if (companyName) {
+      return ResponseHelper.formatResponse(
+        HttpStatus.OK,
+        'Companies successfully listed',
+        this.companyService.findByName(companyName),
+      )
+    } else {
+      return ResponseHelper.formatResponse(
+        HttpStatus.OK,
+        'Companies successfully listed',
+        this.companyService.findAll(),
+      )
+    }
   }
 }

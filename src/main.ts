@@ -11,6 +11,7 @@ async function bootstrap() {
     preflightContinue: false,
     optionsSuccessStatus: 204,
   })
+
   const config = new DocumentBuilder()
     .setTitle('Dimespace API')
     .setDescription('Freelance and job marketplace API')

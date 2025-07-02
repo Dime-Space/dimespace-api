@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common'
+import { Like } from 'typeorm'
 import { AddressRepository } from 'src/address/address.repository'
 import { CompanyRepository } from './company.repository'
 import { CreateCompanyDTO } from './dtos/create-company.dto'
 import { AddressEntity } from 'src/address/address.entity'
 import { UserRepository } from 'src/user/user.repository'
 import { UpdateCompanyDTO } from './dtos/update-company,dto'
+import { CompanyEntity } from './company.entity'
 
 @Injectable()
 export class CompanyService {
@@ -13,6 +15,10 @@ export class CompanyService {
     private readonly addressRepository: AddressRepository,
     private readonly userRepository: UserRepository,
   ) {}
+
+  async findAll(): Promise<CompanyEntity[]> {
+    return this.companyRepository.find()
+  }
 
   async findById(companyId: number) {
     const company = await this.companyRepository.findOneOrFail({
@@ -77,5 +83,13 @@ export class CompanyService {
 
     await this.companyRepository.remove(company)
     return { message: 'Company successfully deleted' }
+  }
+
+  async findByName(name: string): Promise<CompanyEntity[]> {
+    return await this.companyRepository.find({
+      where: {
+        name: Like(`%${name}%`),
+      },
+    })
   }
 }
